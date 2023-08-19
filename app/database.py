@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
-from secrets import DB_PASS
+from app.secrets import DB_PASS
 
 DB_HOST = 'localhost'
 DB_PORT = 5432
