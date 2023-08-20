@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, JSON, ForeignKey
 from app.database import Base
 
 
-class Rooms(Base):
+class Users(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, nullable=False)
