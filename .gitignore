@@ -1,3 +1,5 @@
 /venv/
 /.idea/
 /app/secrets.py
+/app/config.py
+/.env
