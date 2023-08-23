@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from sqlalchemy import select
+from sqlalchemy import select, insert
 from app.database import async_session_maker
 
 
@@ -27,3 +27,11 @@ class BaseDAO:
             query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
             return result.mappings().all()  # эту конструкцию можно вызвать только один раз!
+
+    @classmethod
+    async def add(cls, **data):
+        # фильтры задаём словарём (kwargs)
+        async with async_session_maker() as session:
+            query = insert(cls.model).values(**data)
+            await session.execute(query)
+            await session.commit() # сохраняет изменения в БД
