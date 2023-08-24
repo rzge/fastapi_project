@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Response, Depends
 
-from app.exceptions import UserAlreadyExistsException
+from app.exceptions import UserAlreadyExistsException, IncorrectEmailOrPasswordException
 from app.users.auth import get_password_hash, verify_password, authenticate_user, create_access_token
 from app.users.dao import UsersDAO
 from app.users.dependecies import get_current_user
@@ -26,7 +26,7 @@ async def register_user(user_data: SUserAuth):
 async def login_user(response: Response, user_data: SUserAuth):
     user = await authenticate_user(user_data.email, user_data.password)
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+        raise IncorrectEmailOrPasswordException
     # если пользователь есть, создаём jwt токен и отправляем в куки
     access_token = create_access_token({"sub": str(user.id)})  # в jwt токене ключ должен приводиться к строке
     # засетим куку в ответе
