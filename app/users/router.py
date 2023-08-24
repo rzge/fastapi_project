@@ -25,7 +25,7 @@ async def login_user(response: Response, user_data: SUserAuth):
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     # если пользователь есть, создаём jwt токен и отправляем в куки
-    access_token = create_access_token({"sub": user.id})
+    access_token = create_access_token({"sub": str(user.id)}) # в jwt токене ключ должен приводиться к строке
     # засетим куку в ответе
     response.set_cookie("booking_access_token", access_token, httponly=True) # httponly чтоб не перехватывал джаваскрипт
-    return access_token
+    return {"access_token": access_token}
