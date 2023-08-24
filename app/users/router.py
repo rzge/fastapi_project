@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException, status, Response
+from fastapi import APIRouter, HTTPException, status, Response, Depends
 
 from app.users.auth import get_password_hash, verify_password, authenticate_user, create_access_token
 from app.users.dao import UsersDAO
+from app.users.dependecies import get_current_user
+from app.users.models import Users
 from app.users.schemas import SUserAuth
 
 router = APIRouter(
@@ -25,7 +27,19 @@ async def login_user(response: Response, user_data: SUserAuth):
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     # если пользователь есть, создаём jwt токен и отправляем в куки
-    access_token = create_access_token({"sub": str(user.id)}) # в jwt токене ключ должен приводиться к строке
+    access_token = create_access_token({"sub": str(user.id)})  # в jwt токене ключ должен приводиться к строке
     # засетим куку в ответе
-    response.set_cookie("booking_access_token", access_token, httponly=True) # httponly чтоб не перехватывал джаваскрипт
+    response.set_cookie("booking_access_token", access_token,
+                        httponly=True)  # httponly чтоб не перехватывал джаваскрипт
     return {"access_token": access_token}
+
+
+@router.post("/logout")
+async def logout_user(response: Response):
+    response.delete_cookie("booking_access_token")
+
+
+@router.get("/me")
+async def read_user_me(current_user: Users = Depends(get_current_user)):
+    return current_user
+
