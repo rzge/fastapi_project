@@ -28,6 +28,7 @@ async def get_bookings(user: Users = Depends(get_current_user)):
     #     result = await session.execute(query)
     #     return result.mappings().all()
 
+
 @router.post("")
 async def add_booking(
         room_id: int, date_from: date, date_to: date,
@@ -36,3 +37,13 @@ async def add_booking(
     booking = await BookingDAO.add(user.id, room_id, date_from, date_to)
     if not booking:
         raise HTTPException(status_code=409, detail='Не осталось свободных номеров')
+
+
+@router.delete("/{booking_id}") # удаляет бронь по booking id
+async def delete_booking(
+    booking_id: int,
+    user: Users = Depends(get_current_user)
+):
+    removing_booking = await BookingDAO.delete(booking_id, user.id)
+    if not removing_booking:
+        raise HTTPException(status_code=409, detail='Бронирование не существует')
