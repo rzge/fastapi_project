@@ -8,6 +8,13 @@
     <title>Набронировал</title>
 </head>
 <body>
-    Привет мир
+    <div>
+        {% for hotel in hotels %}
+        <div>
+            <h1>{{hotel.Hotels.name}}</h1>
+            <h4>{{hotel.Hotels.location}}</h4>
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
