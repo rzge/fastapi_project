@@ -29,13 +29,3 @@ class HotelsSearchArgs:
 def get_hotels(search_args: HotelsSearchArgs = Depends()):
     return search_args
 
-
-class SBooking(BaseModel):  # Pydantic схема (поэтому S)
-    room_id: int
-    date_from: date
-    date_to: date
-
-
-@app.post('/bookings')
-def add_booking(booking: SBooking):
-    pass
