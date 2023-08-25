@@ -17,6 +17,6 @@ class HotelDAO(BaseDAO):
     async def search_for_hotels(cls,
                                 location: str):
         async with async_session_maker() as session:
-            query = select(Hotels).filter_by(location=location)
+            query = select(Hotels).where(Hotels.location.like(f'%{location}%'))
             result = await session.execute(query)
             return result.mappings().all()  # возвращает одно значение, или ничто
