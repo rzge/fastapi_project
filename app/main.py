@@ -20,7 +20,7 @@ app.include_router(router_images)
 origins = [
     "http://localhost:3000",
 ]  # адреса сервисов, которые могут обращаться к нашему апи. Нужно для фронтендеров
-
+# обычно а-ля https://mysite.com. Разрешаем этому адресу использовать https://api.mysite.com
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
