@@ -25,3 +25,9 @@ async def get_bookings(user: Users = Depends(get_current_user)):
     #     query = select(Bookings)  # SELECT * FROM bookings;
     #     result = await session.execute(query)
     #     return result.mappings().all()
+
+@router.post("")
+async def add_booking(
+        user: Users = Depends(get_current_user)
+):
+    await BookingDAO.add(user_id = user.id)
