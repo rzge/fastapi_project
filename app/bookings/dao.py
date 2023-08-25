@@ -10,3 +10,7 @@ from app.database import async_session_maker
 class BookingDAO(BaseDAO):
     model = Bookings
 
+    @classmethod
+    async def add(cls):
+        pass
+
