@@ -15,7 +15,7 @@ class BookingDAO(BaseDAO):
 
     @classmethod
     async def add(cls,
-                  user_id:int,
+                  user_id: int,
                   room_id: int,
                   date_from: date,
                   date_to: date,
@@ -38,7 +38,7 @@ class BookingDAO(BaseDAO):
             ).cte("booked_rooms")
 
             get_rooms_left = select((Rooms.quantity - func.count(booked_rooms.c.room_id)).label("rooms_left")
-                                ).select_from(Rooms).join(
+                                    ).select_from(Rooms).join(
                 booked_rooms, booked_rooms.c.room_id == Rooms.id, isouter=True
             ).where(Rooms.id == 1).group_by(
                 Rooms.quantity, booked_rooms.c.room_id
@@ -62,4 +62,22 @@ class BookingDAO(BaseDAO):
             else:
                 return None
 
-
+    @classmethod
+    async def delete(cls,
+                     booking_id: int,
+                     user_id: int):
+        async with async_session_maker() as session:
+            row = await session.execute(select(Bookings).where(
+                and_(
+                    Bookings.id == booking_id,
+                    user_id == user_id
+                )
+            )
+            )
+            try:
+                row = row.scalar_one()
+                await session.delete(row)
+                await session.commit()
+                return row
+            except Exception as ex:
+                return None
