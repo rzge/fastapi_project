@@ -51,6 +51,9 @@ admin = Admin(app, engine)
 class UsersAdmin(ModelView, model=Users):
     column_list = [Users.id, Users.email]
     can_delete = False
+    name = "Пользователь"
+    name_plural = "Пользователи"
+    icon = "fa-solid fa-user"
 
 
 admin.add_view(UsersAdmin)
