@@ -1,6 +1,7 @@
 from datetime import date
 
 from fastapi import APIRouter, Request, Depends, HTTPException
+from fastapi_cache.decorator import cache
 from sqlalchemy import select
 
 from app.bookings.dao import BookingDAO
@@ -17,6 +18,7 @@ router = APIRouter(
 
 
 @router.get("")  # дописывается в /bookings
+@cache(expire=20) # на 20 секунд запоминает в ОЗУ
 async def get_hotels_by_location(location: str):
     hotels = await HotelDAO.search_for_hotels(location=location)
     if not hotels:
