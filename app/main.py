@@ -38,5 +38,5 @@ app.add_middleware(
 
 @app.on_event("startup") # При старте предложения начинает прогонять функцию ниже
 async def startup():
-    redis = aioredis.from_url("redis://localhost:6379", encoding="utf8", decode_response=True)
+    redis = aioredis.from_url("redis://localhost:6379")
     FastAPICache.init(RedisBackend(redis), prefix="cache")
