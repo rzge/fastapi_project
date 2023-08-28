@@ -6,3 +6,4 @@ celery = Celery(
     include=["app.tasks.tasks"]  # папка, где хранятся задачки
 )
 # команда для запуска celery -A app.tasks.celery:celery worker --loglevel=INFO --pool=solo
+# команда для запуска flower -> celery -A app.tasks.celery:celery flower
