@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+
+from app.admin.views import UsersAdmin
 from app.bookings.router import router as router_bookings
 from app.config import settings
 from app.database import engine
@@ -46,15 +48,6 @@ async def startup():
 
 # настраиваем админку
 admin = Admin(app, engine)
-
-
-class UsersAdmin(ModelView, model=Users):
-    column_list = [Users.id, Users.email]
-    column_details_exclude_list = [Users.hashed_password] # прячем пароль
-    can_delete = False
-    name = "Пользователь"
-    name_plural = "Пользователи"
-    icon = "fa-solid fa-user"
 
 
 admin.add_view(UsersAdmin)
