@@ -2,6 +2,7 @@ from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.admin.auth import authentication_backend
 from app.admin.views import UsersAdmin, BookingsAdmin
 from app.bookings.router import router as router_bookings
 from app.config import settings
@@ -47,8 +48,7 @@ async def startup():
     FastAPICache.init(RedisBackend(redis), prefix="cache")
 
 # настраиваем админку
-admin = Admin(app, engine)
-
+admin = Admin(app, engine, authentication_backend=authentication_backend)
 
 admin.add_view(UsersAdmin)
 admin.add_view(BookingsAdmin)
