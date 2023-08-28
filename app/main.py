@@ -50,6 +50,7 @@ admin = Admin(app, engine)
 
 class UsersAdmin(ModelView, model=Users):
     column_list = [Users.id, Users.email]
+    can_delete = False
 
 
 admin.add_view(UsersAdmin)
