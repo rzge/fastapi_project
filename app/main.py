@@ -50,6 +50,7 @@ admin = Admin(app, engine)
 
 class UsersAdmin(ModelView, model=Users):
     column_list = [Users.id, Users.email]
+    column_details_exclude_list = [Users.hashed_password] # прячем пароль
     can_delete = False
     name = "Пользователь"
     name_plural = "Пользователи"
