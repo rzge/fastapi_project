@@ -2,7 +2,7 @@ from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.admin.views import UsersAdmin
+from app.admin.views import UsersAdmin, BookingsAdmin
 from app.bookings.router import router as router_bookings
 from app.config import settings
 from app.database import engine
@@ -51,3 +51,4 @@ admin = Admin(app, engine)
 
 
 admin.add_view(UsersAdmin)
+admin.add_view(BookingsAdmin)
