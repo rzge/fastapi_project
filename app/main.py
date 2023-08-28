@@ -2,6 +2,7 @@ from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from app.bookings.router import router as router_bookings
+from app.config import settings
 from app.users.router import router as router_users
 from app.pages.router import router as router_pages
 from app.hotels.router import router as router_hotels
@@ -38,5 +39,5 @@ app.add_middleware(
 
 @app.on_event("startup") # При старте предложения начинает прогонять функцию ниже
 async def startup():
-    redis = aioredis.from_url("redis://localhost:6379")
+    redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}")
     FastAPICache.init(RedisBackend(redis), prefix="cache")
