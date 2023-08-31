@@ -10,11 +10,15 @@ from app.bookings.models import Bookings
 from app.config import settings
 from app.database import Base, async_session_maker, engine
 from app.hotels.models import Hotels
+from app.main import app
 from app.rooms.models import Rooms
 from app.users.models import Users
 
+from fastapi.testclient import TestClient
+from httpx import AsyncClient
+from app.main import app as fastapi_app
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session", autouse=True) # фикстуры для подготовления тестовых данных
 async def prepare_database():
     # Обязательно убеждаемся, что работаем с тестовой БД
     assert settings.MODE == "TEST"
@@ -61,10 +65,9 @@ def event_loop(request):
     yield loop
     loop.close()
 
+@pytest.fixture(scope="function") # каждый раз отдаётся чистый клиент (function)
+async def ac():
+    async with AsyncClient(app=fastapi_app, base_url="http://test") as ac:
+        yield ac
+# httpx позволяет обращаться к нашим эндпоинтаm, не поднимая серв
 
-
-# Фикстура оказалась бесполезной
-# @pytest.fixture(scope="function")
-# async def session():
-#     async with async_session_maker() as session:
-#         yield session
