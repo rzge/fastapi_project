@@ -68,6 +68,6 @@ def event_loop(request):
 @pytest.fixture(scope="function") # каждый раз отдаётся чистый клиент (function)
 async def ac():
     async with AsyncClient(app=fastapi_app, base_url="http://test") as ac:
-        yield ac
+        yield ac # AsyncClient - тестовый клиент
 # httpx позволяет обращаться к нашим эндпоинтаm, не поднимая серв
 
