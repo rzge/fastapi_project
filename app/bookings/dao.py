@@ -86,7 +86,7 @@ class BookingDAO(BaseDAO):
                      }
             logger.error(
                 msg, extra=extra, exc_info=True
-            )
+            ) #exc info возвращает в лог traceback
     @classmethod
     async def delete(cls, booking_id: int, user_id: int):
         async with async_session_maker() as session:
